@@ -1,57 +1,49 @@
 # Chatbot Client
 
-## Overview
-The client is a Next.js (React) single-page interface inspired by modern conversational UIs. It follows the structural conventions from `mmenu-webqr`—separating reusable UI components, services, and state management. The UI supports:
+This Next.js client implements a modern multimodal chat interface tailored to the backend architecture of the `mmenu` ecosystem. It mirrors the modular structure of `mmenu-webqr` while delivering a bespoke chatbot UI for conversation, image reasoning, and CSV analytics.
 
-- Multi-turn chat with streaming indicators
-- Image upload with inline previews
-- CSV upload (file + URL) with dataset summaries
-- Model selection (ChatGPT is available today)
-- Light and dark themes with a sticky toggle
+## Features
+- **Multi-turn chat** with persistent history and live UI updates
+- **Image conversation** flow with inline previews and assistant responses grounded on uploaded media
+- **CSV analysis** through direct uploads or remote URLs, with on-screen summaries
+- **Theme toggle** offering dark and light experiences inspired by popular chat tools
+- **Responsive layout** ready for desktop usage
 
-## Architecture
+## Project Structure
 ```
 src/
-├── components/      # Reusable UI building blocks
-├── context/         # React contexts for global state (theme, chat)
-├── layouts/         # Page-level layout wrappers
-├── services/        # API clients and integration logic
-├── state-manager/   # Reducers and hooks for chat state
-├── styles/          # Theme tokens and global styles
-├── utils/           # Helper utilities (formatting, adapters)
-└── pages/           # Next.js pages (SPA entry point)
+├── api/          # REST client wrappers
+├── components/   # UI building blocks (message bubbles, composer, header)
+├── hooks/        # Custom React hooks (chat session management)
+├── pages/        # Next.js pages
+├── state/        # Zustand stores for UI state (theme)
+├── styles/       # Global Tailwind styles
+└── utils/        # Shared helpers (formatting)
 ```
 
-State flows from the `ChatProvider` context into presentational components. API calls are encapsulated inside `services/apiClient.ts` for consistency with other mmenu front-ends.
-
 ## Getting Started
+
 ```bash
-cd client
-cp .env.example .env.local # configure NEXT_PUBLIC_API_BASE_URL if needed
 npm install
 npm run dev
 ```
 
-The development server runs on `http://localhost:3000` by default. Update `.env.local` to point the client to the server:
+By default the app expects the server to run at `http://localhost:4000/api/v1`. Override via environment variable:
+
 ```
-NEXT_PUBLIC_API_BASE_URL=http://localhost:3001/api
+NEXT_PUBLIC_CHATBOT_API_BASE_URL=http://localhost:4000/api/v1
 ```
 
-## Available Scripts
-- `npm run dev` – Start the Next.js dev server
-- `npm run build` – Create an optimized production build
-- `npm start` – Run the production build
-- `npm run lint` – Lint the source files with Next.js ESLint config
-- `npm test` – Placeholder script for future automated tests
+Create an `.env.local` file and add the variable if you need a different backend endpoint.
+
+## Linting
+
+```
+npm run lint
+```
 
 ## Design Notes
-- Theme tokens mirror leading chatbot experiences with high contrast and comfortable spacing.
-- Chat bubbles automatically adapt to light/dark themes using CSS variables.
-- File uploads show progress and fallback states to keep the UX responsive.
-- The layout is optimized for desktop but gracefully collapses on smaller breakpoints.
-
-## Future Enhancements
-- Integrate websocket streaming for incremental assistant responses
-- Persist chat sessions via localStorage or server-side storage
-- Add chart visualizations for dataset questions using lightweight plotting libraries
+- Uses **TailwindCSS** for rapid styling inspired by world-class chat products
+- Separates concerns between data fetching, UI components, and state to align with `mmenu-webqr` conventions
+- Provides graceful loading/error states and ensures the folder operates independently with relative paths only
 

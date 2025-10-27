@@ -2,94 +2,65 @@ syntax = "proto3";
 
 package chatbot;
 
-service ChatbotService {
-  rpc CreateSession(CreateSessionRequest) returns (SessionResponse);
-  rpc GetSession(GetSessionRequest) returns (SessionResponse);
-  rpc PostMessage(PostMessageRequest) returns (PostMessageResponse);
-  rpc UploadImage(UploadImageRequest) returns (UploadImageResponse);
-  rpc UploadCsv(UploadCsvRequest) returns (UploadCsvResponse);
-  rpc UploadCsvFromUrl(UploadCsvFromUrlRequest) returns (UploadCsvResponse);
-}
+option go_package = "chatbot/proto";
 
-message CreateSessionRequest {
-  string model = 1;
-}
-
-message GetSessionRequest {
-  string session_id = 1;
-}
-
-message SessionResponse {
-  Session session = 1;
-}
-
-message PostMessageRequest {
-  string session_id = 1;
-  string content = 2;
-  repeated string dataset_ids = 3;
-  repeated string image_ids = 4;
-  string model = 5;
-}
-
-message PostMessageResponse {
-  ChatMessage user_message = 1;
-  ChatMessage assistant_message = 2;
-}
-
-message UploadImageRequest {
-  string session_id = 1;
-  bytes content = 2;
-  string filename = 3;
-  string mime_type = 4;
-}
-
-message UploadImageResponse {
-  string image_id = 1;
-  string url = 2;
-  string name = 3;
-}
-
-message UploadCsvRequest {
-  string session_id = 1;
-  bytes content = 2;
-  string filename = 3;
-}
-
-message UploadCsvFromUrlRequest {
-  string session_id = 1;
-  string url = 2;
-}
-
-message UploadCsvResponse {
-  Dataset dataset = 1;
-}
-
-message Dataset {
+message Attachment {
   string id = 1;
-  string name = 2;
-  int32 row_count = 3;
-  int32 column_count = 4;
-  repeated DatasetColumn columns = 5;
+  string type = 2; // image, csv
+  string url = 3;
+  string original_name = 4;
 }
 
-message DatasetColumn {
-  string name = 1;
-  string type = 2;
-  int32 unique_values = 3;
-  int32 missing_values = 4;
-}
-
-message ChatMessage {
+message Message {
   string id = 1;
-  string role = 2;
-  string content = 3;
-  string created_at = 4;
+  string conversation_id = 2;
+  string role = 3; // user | assistant
+  string type = 4; // text | image | csv
+  string content = 5;
+  map<string, string> metadata = 6;
+  string created_at = 7;
 }
 
-message Session {
+message Conversation {
   string id = 1;
+  string title = 2;
+  string model = 3;
+  repeated Message messages = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+message CreateConversationRequest {
+  string title = 1;
   string model = 2;
-  string created_at = 3;
-  string updated_at = 4;
-  repeated ChatMessage messages = 5;
+}
+
+message CreateConversationResponse {
+  Conversation conversation = 1;
+}
+
+message StreamConversationRequest {
+  string conversation_id = 1;
+}
+
+message StreamConversationResponse {
+  Message message = 1;
+}
+
+message SendMessageRequest {
+  string conversation_id = 1;
+  string content = 2;
+  string type = 3;
+  map<string, string> metadata = 4;
+}
+
+message SendMessageResponse {
+  Message user_message = 1;
+  Message assistant_message = 2;
+}
+
+service ChatbotService {
+  rpc CreateConversation(CreateConversationRequest) returns (CreateConversationResponse);
+  rpc StreamConversation(StreamConversationRequest) returns (stream StreamConversationResponse);
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
 }
