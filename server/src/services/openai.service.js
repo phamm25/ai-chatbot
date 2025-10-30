@@ -43,28 +43,31 @@ const mapMessagesToInput = (messages) =>
     };
   });
 
-const createCompletion = async (messages, { model }) => {
-  try {
-    const api = getClient();
-    const formattedMessages = mapMessagesToInput(messages);
-    const response = await api.responses.create({
-      model: model === 'chatgpt' ? 'gpt-4o-mini' : model,
-      input: formattedMessages,
-    });
-    const outputs = Array.isArray(response.output) ? response.output : [];
-    const textContent = outputs
-      .filter((item) => item.type === 'output_text')
-      .map((item) => item.text)
-      .join('\n');
-    if (!textContent) {
-      throw new Error('Empty response from OpenAI');
+  const createCompletion = async (messages, { model }) => {
+    try {
+      const api = getClient();
+      const formattedMessages = mapMessagesToInput(messages);
+      console.log('\n\n formattedMessages', formattedMessages); // Debugging formatted messages
+      const response = await api.responses.create({
+        model: model === 'chatgpt' ? 'gpt-4o-mini' : model,
+        input: formattedMessages,
+      });
+  
+      console.log('OpenAI API response:', response); // Debugging API response
+  
+      // The correct location of output_text is at the top-level of the response object
+      const textContent = response.output_text;
+  
+      if (!textContent) {
+        logger.warn('No output_text in the response');
+        return "Sorry, I couldn't process that request. Internal Server Error";
+      }
+      return textContent.trim();
+    } catch (error) {
+      logger.error(`OpenAI request failed: ${error.message}`);
+      throw new ApiError(502, 'Failed to communicate with ChatGPT', { cause: error.message });
     }
-    return textContent.trim();
-  } catch (error) {
-    logger.error(`OpenAI request failed: ${error.message}`);
-    throw new ApiError(502, 'Failed to communicate with ChatGPT', { cause: error.message });
-  }
-};
+  };
 
 module.exports = {
   createCompletion,
