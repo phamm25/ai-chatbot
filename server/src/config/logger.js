@@ -2,7 +2,7 @@ const { createLogger, format, transports } = require('winston');
 const { getRequestContext } = require('../utils/requestContext');
 
 const logger = createLogger({
-  level: 'info',
+  level: 'info', // any log at the info level or higher (like warn, error, etc.)
   format: format.combine(
     format.timestamp(),
     format.errors({ stack: true }),
