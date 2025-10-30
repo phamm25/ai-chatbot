@@ -51,17 +51,10 @@ const createCompletion = async (messages, { model }) => {
   try {
     const api = getClient();
     const formattedMessages = mapMessagesToInput(messages);
-    console.log('\n\n formattedMessages', formattedMessages);
-    for (const item of formattedMessages) {
-      console.log('item', item);
-    }
     const response = await api.responses.create({
       model: model === 'chatgpt' ? 'gpt-4o-mini' : model,
       input: formattedMessages,
     });
-
-    console.log('OpenAI API response:', response);
-
     const textContent = response.output_text;
 
     if (!textContent) {
