@@ -12,7 +12,7 @@ const parseNumber = (value, fallback) => {
 };
 
 module.exports = {
-  port: parseNumber(process.env.PORT, 4000),
+  port: parseNumber(process.env.PORT, 3000),
   mongoUri: process.env.MONGODB_URI,
   redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
   openAiApiKey: process.env.OPENAI_API_KEY,
