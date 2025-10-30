@@ -11,7 +11,7 @@ export const ConversationHeader = ({ conversation, isLoading, onRefresh }: Conve
   return (
     <header className="flex flex-col gap-3 border-b border-gray-200 bg-white/70 px-6 py-5 backdrop-blur dark:border-gray-700 dark:bg-gray-900/60 md:flex-row md:items-center md:justify-between md:px-10">
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-50">Vision & Data Chat</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-50">Pam's AI Chatbot</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {conversation ? `Started ${formatTimestamp(conversation.createdAt)}` : 'Initializing conversation…'}
         </p>
