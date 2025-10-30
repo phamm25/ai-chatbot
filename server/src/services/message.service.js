@@ -12,7 +12,9 @@ When CSV summaries are supplied, reason over the statistics and refer to concret
 Respond with concise, helpful markdown.`;
 
 const buildHistoryForModel = async (conversationId, newMessage) => {
-  const history = await Message.find({ conversation: conversationId }).sort({ createdAt: 1 }).lean();
+  const history = await Message.find({ conversation: conversationId })
+    .sort({ createdAt: 1 })
+    .lean();
   const messages = [
     { role: 'system', content: SYSTEM_PROMPT, type: 'text' },
     ...history.map((message) => ({
@@ -66,7 +68,10 @@ const createMessages = async (conversationId, payload) => {
   let enrichedMetadata = metadata;
 
   if (type === 'image') {
-    const uploadMetadata = await resolveUploadMetadata({ type: 'image', uploadId: metadata.uploadId });
+    const uploadMetadata = await resolveUploadMetadata({
+      type: 'image',
+      uploadId: metadata.uploadId,
+    });
     enrichedMetadata = { ...metadata, ...uploadMetadata };
   }
 
@@ -117,7 +122,9 @@ const createMessages = async (conversationId, payload) => {
 
 const listMessages = async (conversationId) => {
   await getConversationById(conversationId);
-  const messages = await Message.find({ conversation: conversationId }).sort({ createdAt: 1 }).lean();
+  const messages = await Message.find({ conversation: conversationId })
+    .sort({ createdAt: 1 })
+    .lean();
   return messages.map((message) => ({
     id: message._id,
     conversation: message.conversation,
