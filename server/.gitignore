@@ -8,3 +8,4 @@ uploads/images/*
 !uploads/images/.gitkeep
 uploads/csv/*
 !uploads/csv/.gitkeep
+package-lock.json
