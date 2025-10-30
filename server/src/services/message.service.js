@@ -6,7 +6,7 @@ const { getConversationById } = require('./conversation.service');
 const { createCompletion } = require('./openai.service');
 const { getSummaryFromUpload, getSummaryFromUrl } = require('./csv.service');
 
-const SYSTEM_PROMPT = `You are an insightful restaurant technology assistant helping users analyze images and CSV datasets.
+const SYSTEM_PROMPT = `You are an insightful assistant helping users analyze images and CSV datasets.
 When the conversation references an image, use the visual context provided to ground your answer.
 When CSV summaries are supplied, reason over the statistics and refer to concrete numbers when possible.
 Respond with concise, helpful markdown.`;
