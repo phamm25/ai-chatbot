@@ -17,6 +17,7 @@ const getClient = () => {
 
 const mapMessagesToInput = (messages) =>
   messages.map((message) => {
+    // For image messages, associate the image with a proper input type
     if (message.type === 'image' && message.metadata && message.metadata.url) {
       return {
         role: message.role,
@@ -33,6 +34,13 @@ const mapMessagesToInput = (messages) =>
         content: [{ type: 'input_text', text: summaryText }],
       };
     }
+    if (message.role === 'assistant') {
+      return {
+        role: message.role,
+        content: [{ type: 'output_text', text: message.content }],
+      };
+    }
+    // Default
     return {
       role: message.role,
       content: [{ type: 'input_text', text: message.content }],
@@ -43,7 +51,7 @@ const createCompletion = async (messages, { model }) => {
   try {
     const api = getClient();
     const formattedMessages = mapMessagesToInput(messages);
-    console.log('\n\n formattedMessages', formattedMessages); // Debugging formatted messages
+    console.log('\n\n formattedMessages', formattedMessages);
     for (const item of formattedMessages) {
       console.log('item', item);
     }
@@ -52,9 +60,8 @@ const createCompletion = async (messages, { model }) => {
       input: formattedMessages,
     });
 
-    console.log('OpenAI API response:', response); // Debugging API response
+    console.log('OpenAI API response:', response);
 
-    // The correct location of output_text is at the top-level of the response object
     const textContent = response.output_text;
 
     if (!textContent) {
