@@ -1,6 +1,6 @@
 # Chatbot Server
 
-The Chatbot server is an Express.js application designed following the service/controller patterns used in `mmenu-api`. It exposes REST APIs to power the chatbot experience, including multi-turn conversation persistence, image and CSV understanding, and OpenAI powered assistant responses.
+The Chatbot server is an Express.js application designed following the service/controller patterns. It exposes REST APIs to power the chatbot experience, including multi-turn conversation persistence, image and CSV understanding, and OpenAI powered assistant responses.
 
 ## Architecture Overview
 
@@ -39,7 +39,7 @@ cp .env.example .env
 
 | Variable | Description |
 | --- | --- |
-| `PORT` | HTTP port (default 4000) |
+| `PORT` | HTTP port (default 3000) |
 | `MONGODB_URI` | Mongo connection string |
 | `REDIS_URL` | Redis connection URI |
 | `OPENAI_API_KEY` | OpenAI credential |
@@ -50,10 +50,11 @@ cp .env.example .env
 
 ```
 npm install
+redis-server
 npm run dev
 ```
 
-The server exposes REST APIs at `http://localhost:4000/api/v1`. Refer to inline Swagger comments (coming soon) or the client integration for usage examples.
+The server exposes REST APIs at `http://localhost:3000/api/v1`. Refer to inline Swagger comments (coming soon) or the client integration for usage examples.
 
 ## Testing & Linting
 
