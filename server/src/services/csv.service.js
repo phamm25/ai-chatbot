@@ -59,8 +59,12 @@ const computeNumericStats = (values) => {
 const computeColumnSummary = (records, column) => {
   const values = records.map((record) => record[column]);
   const type = detectColumnType(values);
-  const missing = values.filter((value) => value === null || value === undefined || value === '').length;
-  const uniqueValues = new Set(values.filter((value) => value !== null && value !== undefined && value !== '')).size;
+  const missing = values.filter(
+    (value) => value === null || value === undefined || value === '',
+  ).length;
+  const uniqueValues = new Set(
+    values.filter((value) => value !== null && value !== undefined && value !== ''),
+  ).size;
 
   return {
     name: column,
@@ -137,7 +141,7 @@ const getSummaryFromUpload = async (uploadId) => {
     return cached;
   }
 
-  const buffer = await fs.readFile(upload.storagePath);
+  const buffer = await fetchCsvFromUrl(upload.publicUrl);
   const summary = parseCsvBuffer(buffer);
   await setSummaryToCache(identifier, summary);
   return summary;
