@@ -1,3 +1,7 @@
+![Project Image](./thumbnail1.png)
+![Project Image 2](./thumbnail2.png)
+
+
 # 🤖 Lightweight Multi-Modal AI Chatbot
 
 This project implements a lightweight, multi-modal chat application designed to handle standard multi-turn conversations, image analysis, and structured data querying from CSV files. The application is built using a modern Node.js/TypeScript stack, reflecting the existing repository structure.
