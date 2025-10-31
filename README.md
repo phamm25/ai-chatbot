@@ -116,6 +116,10 @@ npm run dev
 
 The frontend is configured to communicate with the backend API.
 
+### 4. Potential Optimization Features (`server/src/futureOptimzation`)
+
+I haven't got time to finish some features for the optimization process. Some of them are located in the directory above
+
 ## 📹 Short Video Demo
 
 **(Placeholder: A short video demo showcasing the three core features—multi-turn chat, image analysis, and CSV data querying—will be linked here.)**
